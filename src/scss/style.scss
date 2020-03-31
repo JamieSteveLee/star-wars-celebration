@@ -9,10 +9,10 @@ body {
 	background-color: #000;
 	color: #fff;
 	text-transform: uppercase;
-	padding-bottom: 40px;
 }
 
 $sw-yellow: #ffe900;
+$max-page-width: 800px;
 
 a {
 	color: #fff;
@@ -28,6 +28,51 @@ a {
 h1 {
 	font-size: 30px;
 	font-weight: 800;
+	margin-bottom: 30px;
+}
+
+
+.settings {
+	max-width: $max-page-width;
+
+	.settings-header,
+	.settings-content {
+		justify-content: center;
+	}
+	.settings-header {
+		color: #7f7f7f;
+		display: flex;
+		justify-content: flex-end;
+		position: absolute;
+		width: 100%;
+		z-index: 1;
+
+		.settings-button {
+			cursor: pointer;
+			padding: 10px;
+
+			.fa {
+				font-size: 140%;
+				display: flex;
+				align-items: center;
+			}
+		}
+	}
+	.settings-content {
+		height: 0;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+
+		&.settings-open {
+			padding-top: 30px;
+			height: auto;
+			border-bottom: 1px solid #7f7f7f;
+		}
+	}
+}
+.current-timezone {
+	margin: 4px 0 30px;
 }
 
 .button-container {
@@ -37,9 +82,6 @@ h1 {
 	>div {
 		padding: 0;
 	}
-}
-.current-timezone {
-	margin-bottom: 30px;
 }
 .button {
 	display: inline-block;
@@ -58,11 +100,16 @@ h1 {
 }
 
 .table-container {
-	max-width: 400px;
+	max-width: $max-page-width;
 	padding-bottom: 14px;
 	border-bottom: 1px solid $sw-yellow;
-	margin-bottom: 20px;
+	margin-bottom: 26px;
 	line-height: normal;
+
+	&:last-child {
+		border: 0;
+		margin-bottom: 10px;
+	}
 
 	>.row {
 		padding-bottom: 16px;
