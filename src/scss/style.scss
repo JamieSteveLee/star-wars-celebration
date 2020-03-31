@@ -65,15 +65,21 @@ h1 {
 	line-height: normal;
 
 	>.row {
-		padding-bottom: 8px;
+		padding-bottom: 16px;
 
 		&:first-child {
 			font-weight: 600;
 			color: $sw-yellow;
 		}
+		&:not(:first-child) {
+			text-transform: none;
+		}
 
 		div:nth-child(2) {
 			text-align: right;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
 		}
 	}
 }

@@ -5,7 +5,7 @@ const concat = require('gulp-concat');
 const babel  = require('gulp-babel');
 
 gulp.task('styles', ()=> {
-	return gulp.src('scss/**/*.scss')
+	return gulp.src('src/scss/**/*.scss')
 		.pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
 		.pipe(concat('styles.min.css'))
 		.pipe(gulp.dest('.'))
@@ -13,13 +13,12 @@ gulp.task('styles', ()=> {
 
 gulp.task('scripts', ()=> {
 	function createErrorHandler(name) {
-		return function (err) {
+		return (err) => {
 			console.error('Error from ' + name + ' in scripts task', err.toString());
 		};
 	}
-	return gulp.src(['js/*.js'])
-		.pipe(babel({presets: ['env']}))
-		.on('error', createErrorHandler('babel'))
+	return gulp.src(['src/js/**/*.js'])
+		.pipe(babel({presets: ['@babel/env']}))
 		.pipe(uglify())
 		.on('error', createErrorHandler('uglify'))
 		.pipe(concat('scripts.min.js'))
@@ -28,8 +27,8 @@ gulp.task('scripts', ()=> {
 });
 
 gulp.task('watch', ()=> {
-	gulp.watch('scss/**/*.scss', ['styles']);
-	gulp.watch('js/**/*.js', ['scripts']);
+	gulp.watch('src/scss/**/*.scss', gulp.parallel('styles'));
+	gulp.watch('src/js/**/*.js', gulp.parallel('scripts'));
 });
 
-gulp.task('default', ['watch', 'scripts', 'styles']);
+gulp.task('default', gulp.series('scripts', 'styles', 'watch'));
