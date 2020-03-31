@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+		<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+		<link rel="stylesheet" href="styles.min.css" type="text/css" />
+
+		<title>PANEL SCHEDULE - Star Wars Celebration 2019</title>
+	</head>
+	<body>
+		<div id="app">
+			<div class="container">
+				<div class="row">
+					<div class="col-12 text-center">
+						<img src="img/logo-swc-2018.svg" alt="Star Wars Celebration 2019">
+						<h1>Panel Schedule</h1>
+					</div>
+				</div>
+				<div class="row button-container">
+					<div class="col-12 text-center">
+						<div class="button" @click="setTimezone('America/Chicago', true)" :class="{ active: selectedChicago }">Chicago time</div>
+						<div class="button" @click="setTimezone(browserTimezone, false)" :class="{ active: selectedLocal }">Your local time</div>
+					</div>
+				</div>
+				<div class="row current-timezone">
+					<div class="col-12 text-center">Timezone: {{currentTimezone}}</div>
+				</div>
+
+			</div>
+
+			<!-- Friday -->
+			<div class="container table-container">
+				<div class="row">
+					<div class="col-8">Friday April 12</div>
+					<div class="col-4">Day 2</div>
+				</div>
+				<div class="row">
+					<div class="col-8">Episode IX</div>
+					<div class="col-4">{{getTime([2019, 4, 12, 16, 0, 0], "America/Chicago")}}</div>
+				</div>
+				<div class="row">
+					<div class="col-8">Vader Immortal</div>
+					<div class="col-4">{{getTime([2019, 4, 12, 18, 30, 0], "America/Chicago")}}</div>
+				</div>
+				<div class="row">
+					<div class="col-8">LFL Publishing</div>
+					<div class="col-4">{{getTime([2019, 4, 12, 21, 45, 0], "America/Chicago")}}</div>
+				</div>
+			</div>
+
+			<!-- Saturday -->
+			<div class="container table-container">
+				<div class="row">
+					<div class="col-8">Saturday April 13</div>
+					<div class="col-4">Day 3</div>
+				</div>
+				<div class="row">
+					<div class="col-8">Galaxy's Edge</div>
+					<div class="col-4">{{getTime([2019, 4, 13, 16, 0, 0], "America/Chicago")}}</div>
+				</div>
+				<div class="row">
+					<div class="col-8">Rebels Remembered</div>
+					<div class="col-4">{{getTime([2019, 4, 13, 17, 45, 0], "America/Chicago")}}</div>
+				</div>
+				<div class="row">
+					<div class="col-8">Jedi: Fallen Order</div>
+					<div class="col-4">{{getTime([2019, 4, 13, 18, 30, 0], "America/Chicago")}}</div>
+				</div>
+			</div>
+
+			<!-- Sunday -->
+			<div class="container table-container">
+				<div class="row">
+					<div class="col-8">Sunday April 14</div>
+					<div class="col-4">Day 4</div>
+				</div>
+				<div class="row">
+					<div class="col-8">The Mandalorian</div>
+					<div class="col-4">{{getTime([2019, 4, 14, 16, 0, 0], "America/Chicago")}}</div>
+				</div>
+				<div class="row">
+					<div class="col-8">Alan Tudyk</div>
+					<div class="col-4">{{getTime([2019, 4, 14, 18, 30, 0], "America/Chicago")}}</div>
+				</div>
+				<div class="row">
+					<div class="col-8">The Clone Wars</div>
+					<div class="col-4">{{getTime([2019, 4, 14, 20, 30, 0], "America/Chicago")}}</div>
+				</div>
+			</div>
+
+			<!-- Monday -->
+			<div class="container table-container">
+				<div class="row">
+					<div class="col-8">Monday April 15</div>
+					<div class="col-4">Day 5</div>
+				</div>
+				<div class="row">
+					<div class="col-8">TPM 20<sup>th</sup> Anniversary</div>
+					<div class="col-4">{{getTime([2019, 4, 15, 16, 0, 0], "America/Chicago")}}</div>
+				</div>
+				<div class="row">
+					<div class="col-8">SW Resistance</div>
+					<div class="col-4">{{getTime([2019, 4, 15, 18, 30, 0], "America/Chicago")}}</div>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="scripts.min.js"></script>
+	</body>
+</html>
