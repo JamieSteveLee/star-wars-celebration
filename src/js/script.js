@@ -1,10 +1,13 @@
 var app = new Vue({
 	el: '#app',
 	data: {
-		currentTimezone: 'America/Chicago',
-		selectedChicago: true,
-		selectedLocal: false,
 		settingsOpen: false,
+		settings: {
+			currentTimezone: 'America/Chicago',
+			selectedChicago: true,
+			selectedLocal: false,
+			twentyFourHour: false
+		},
 		celebration2019: [
 			{
 				date: "Friday April 12",
@@ -99,8 +102,19 @@ var app = new Vue({
 		}
 	},
 	methods: {
-		getTime: function(utcTime) {
-			// Add time in GMT
+		getTime: function(utcTime, hourOnly) {
+			var dateFormatSettings = {
+				timeZone: this.settings.currentTimezone
+			}
+			if(hourOnly) {
+				dateFormatSettings.hour = '2-digit';
+				dateFormatSettings.minute = '2-digit';
+
+				if(this.settings.twentyFourHour) {
+					dateFormatSettings.hour12 = false;
+				}
+			}
+
 			var newTime = new Date(Date.UTC(
 				utcTime[0], // Year
 				utcTime[1], // Month
@@ -108,24 +122,43 @@ var app = new Vue({
 				utcTime[3], // Hour
 				utcTime[4], // Minute
 				utcTime[5] // Seconds
-			)).toLocaleTimeString("en-US", {
-				timeZone: this.currentTimezone,
-				hour: '2-digit', 
-				minute: '2-digit', 
-				hour12: true
-			});
+			)).toLocaleString("en-US", 
+				dateFormatSettings
+			);
+
+			if(hourOnly) {
+				newTime = newTime.replace(/^0+/, '');
+
+				if(!this.settings.twentyFourHour) {
+					newTime = newTime.replace(/\:00/, '');
+				}
+			}
+
 			return newTime;
+		},
+		getDayDifference: function(utcTime) {
+			var newTime = this.getTime(utcTime)
+
+			var currentDay = utcTime[2];
+			var newDay = new Date(newTime).getDate();
+
+			var dayDifference = (newDay - currentDay);
+
+			// prepend plus if next day
+			if(dayDifference > 0) dayDifference = "+" + dayDifference;
+
+			return dayDifference;
 		},
 		setTimezone: function(newTimezone, hasSelectedChicago) {
 			if(hasSelectedChicago) {
-				this.selectedChicago = true;
-				this.selectedLocal = false;
+				this.settings.selectedChicago = true;
+				this.settings.selectedLocal = false;
 			} else {
-				this.selectedChicago = false;
-				this.selectedLocal = true;
+				this.settings.selectedChicago = false;
+				this.settings.selectedLocal = true;
 			}
 
-			this.currentTimezone = newTimezone;
+			this.settings.currentTimezone = newTimezone;
 		},
 		toggleSettings: function() {
 			this.settingsOpen = !this.settingsOpen;

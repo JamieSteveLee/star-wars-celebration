@@ -24,12 +24,19 @@
 				<div class="row settings-content" :class="{ 'settings-open': settingsOpen }">
 					<div class="row button-container">
 						<div class="col-12 text-center">
-							<div class="button" @click="setTimezone('America/Chicago', true)" :class="{ active: selectedChicago }">Chicago time</div>
-							<div class="button" @click="setTimezone(browserTimezone, false)" :class="{ active: selectedLocal }">Your local time</div>
+							<div class="button" @click="setTimezone('America/Chicago', true)" :class="{ active: settings.selectedChicago }">Chicago time</div>
+							<div class="button" @click="setTimezone(browserTimezone, false)" :class="{ active: settings.selectedLocal }">Your local time</div>
 						</div>
 					</div>
 					<div class="row current-timezone">
-						<div class="col-12 text-center">Timezone: {{currentTimezone}}</div>
+						<div class="col-12 text-center">Timezone: {{settings.currentTimezone}}</div>
+					</div>
+					<div class="row twenty-four-wrap">
+						<div class="col-12 checkbox-wrap">
+							<input type="checkbox" id="twenty-four-hr" v-model="settings.twentyFourHour">
+							<label for="twenty-four-hr"></label>
+							<label for="twenty-four-hr">24-hour clock</label>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -54,7 +61,9 @@
 						<a :href="panel.url" target="_blank" v-if="panel.url">{{panel.name}}</a>
 						<span v-else>{{panel.name}}</span>
 					</div>
-					<div class="col-4">{{getTime(panel.timeGMT)}}</div>
+					<div class="col-4 pl-0">
+						<span>{{getTime(panel.timeGMT, true)}} <span class="day-diff" v-if="getDayDifference(panel.timeGMT) != 0">({{getDayDifference(panel.timeGMT)}})</span></span>
+					</div>
 				</div>
 			</div>
 		</div>

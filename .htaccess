@@ -1,0 +1,3 @@
+RewriteEngine on
+
+Redirect 302 /star-wars-celebration/index.html /star-wars-celebration/2019/
