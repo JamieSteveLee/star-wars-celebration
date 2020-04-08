@@ -1,3 +1,7 @@
+[v-cloak] {
+	display: none;
+}
+
 *, *:before, *:after {
 	box-sizing: inherit;
 }
@@ -34,6 +38,10 @@ h1 {
 .settings {
 	max-width: $max-page-width;
 
+	.row {
+		margin-bottom: 24px;
+	}
+
 	.settings-header,
 	.settings-content {
 		justify-content: center;
@@ -65,7 +73,7 @@ h1 {
 		flex-direction: column;
 
 		&.settings-open {
-			padding: 30px 0 20px;
+			padding: 36px 0 10px;
 			height: auto;
 			border-bottom: 1px solid #7f7f7f;
 		}
@@ -73,13 +81,13 @@ h1 {
 }
 
 .current-timezone {
-	margin: 0px 0 20px;
 	opacity: 60%;
+	margin-top: 4px;
 }
 
 .button-container {
 	padding: 0;
-	margin: 10px -15px 4px;
+	margin: 10px -15px 20px;
 
 	>div {
 		padding: 0;
@@ -99,6 +107,12 @@ h1 {
 	&.active {
 		background-color: #fff;
 		color: #000;
+	}
+
+	&.button-reset {
+		width: auto;
+		padding: 4px 8px;
+		opacity: 60%;
 	}
 }
 

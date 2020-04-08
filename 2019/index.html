@@ -10,10 +10,13 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 		<link rel="stylesheet" href="../styles.min.css" type="text/css" />
 
+		<link rel="apple-touch-icon" sizes="128x128" href="app-icon.png">
+		<link rel="icon" sizes="192x192" href="app-icon.png">
+
 		<title>PANEL SCHEDULE - Star Wars Celebration 2019</title>
 	</head>
 	<body>
-		<div id="app">
+		<div id="app" v-cloak>
 			<div class="container settings">
 				<div class="row settings-header">
 					<span class="settings-button" @click="toggleSettings()">
@@ -27,15 +30,25 @@
 							<div class="button" @click="setTimezone('America/Chicago', true)" :class="{ active: settings.selectedChicago }">Chicago time</div>
 							<div class="button" @click="setTimezone(browserTimezone, false)" :class="{ active: settings.selectedLocal }">Your local time</div>
 						</div>
+						<div class="col-12 text-center current-timezone">Timezone: {{settings.currentTimezone}}</div>
 					</div>
-					<div class="row current-timezone">
-						<div class="col-12 text-center">Timezone: {{settings.currentTimezone}}</div>
-					</div>
-					<div class="row twenty-four-wrap">
+					<div class="row">
 						<div class="col-12 checkbox-wrap">
 							<input type="checkbox" id="twenty-four-hr" v-model="settings.twentyFourHour">
 							<label for="twenty-four-hr"></label>
 							<label for="twenty-four-hr">24-hour clock</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12 checkbox-wrap">
+							<input type="checkbox" id="short-names" v-model="settings.shortNames">
+							<label for="short-names"></label>
+							<label for="short-names">Short names</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12 text-center">
+							<div class="button button-reset" @click="resetSettings()">Reset</div>
 						</div>
 					</div>
 				</div>
@@ -58,8 +71,8 @@
 				</div>
 				<div class="row" v-for="panel in day.panels">
 					<div class="col-8">
-						<a :href="panel.url" target="_blank" v-if="panel.url">{{panel.name}}</a>
-						<span v-else>{{panel.name}}</span>
+						<a :href="panel.url" target="_blank" v-if="panel.url">{{getDisplayname(panel)}}</a>
+						<span v-else>{{getDisplayname(panel)}}</span>
 					</div>
 					<div class="col-4 pl-0">
 						<span>{{getTime(panel.timeGMT, true)}} <span class="day-diff" v-if="getDayDifference(panel.timeGMT) != 0">({{getDayDifference(panel.timeGMT)}})</span></span>
