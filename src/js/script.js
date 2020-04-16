@@ -11,7 +11,9 @@ var app = new Vue({
 			twentyFourHour: false,
 			shortNames: false,
 			showStages: false,
-			stageFilter: ["Celebration"]
+			stageFilter: ["Celebration"],
+			showFaves: false,
+			editFaves: false,
 		},
 		celebration2019: [
 			{
@@ -24,6 +26,7 @@ var app = new Vue({
 						shortName: "Episode IX",
 						timeGMT: [2019, 4, 12, 16, 0, 0],
 						stages: ["Celebration", "Galaxy", "Twin Suns"],
+						fave: true,
 						display: true,
 						url: "https://www.youtube.com/watch?v=RnhiLZOprZE",
 					},
@@ -32,6 +35,7 @@ var app = new Vue({
 						shortName: "Vader Immortal",
 						timeGMT: [2019, 4, 12, 18, 30, 0],
 						stages: ["Celebration"],
+						fave: false,
 						display: true,
 						url: "https://www.youtube.com/watch?v=bP9lB8BMSzo",
 					},
@@ -40,6 +44,7 @@ var app = new Vue({
 						shortName: "Creatures, Droids & Aliens",
 						timeGMT: [2019, 4, 12, 21, 0, 0],
 						stages: ["Celebration"],
+						fave: false,
 						display: true,
 						url: "https://www.youtube.com/watch?v=De3NwcdQAlY",
 					},
@@ -55,6 +60,7 @@ var app = new Vue({
 						shortName: "Galaxy’s Edge",
 						timeGMT: [2019, 4, 13, 16, 0, 0],
 						stages: ["Celebration"],
+						fave: true,
 						display: true,
 						url: "https://www.youtube.com/watch?v=lMwhJiK-XbA",
 					},
@@ -63,6 +69,7 @@ var app = new Vue({
 						shortName: "Jedi: Fallen Order",
 						timeGMT: [2019, 4, 13, 18, 30, 0],
 						stages: ["Celebration"],
+						fave: true,
 						display: true,
 						url: "https://www.youtube.com/watch?v=XNa5FwnCfXE",
 					},
@@ -71,6 +78,7 @@ var app = new Vue({
 						shortName: "Women and Star Wars",
 						timeGMT: [2019, 4, 13, 21, 0, 0],
 						stages: ["Celebration"],
+						fave: false,
 						display: true,
 						url: "https://www.youtube.com/watch?v=MfzrCUOx91U",
 					},
@@ -85,6 +93,7 @@ var app = new Vue({
 						name: "The Mandalorian",
 						timeGMT: [2019, 4, 14, 16, 0, 0],
 						stages: ["Celebration", "Galaxy", "Twin Suns"],
+						fave: true,
 						display: true,
 						url: "https://www.youtube.com/watch?v=GrlTosbjylA",
 					},
@@ -93,6 +102,7 @@ var app = new Vue({
 						shortName: "Alan Tudyk",
 						timeGMT: [2019, 4, 14, 18, 30, 0],
 						stages: ["Celebration"],
+						fave: false,
 						display: true,
 						url: "https://www.youtube.com/watch?v=rscLMX2axdk",
 					},
@@ -101,6 +111,7 @@ var app = new Vue({
 						shortName: "The Clone Wars",
 						timeGMT: [2019, 4, 14, 20, 30, 0],
 						stages: ["Celebration", "Twin Suns"],
+						fave: false,
 						display: true,
 						url: "https://www.youtube.com/watch?v=I0XlB2EJZuA",
 					},
@@ -116,6 +127,7 @@ var app = new Vue({
 						shortName: "TPM 20th Anniversary",
 						timeGMT: [2019, 4, 15, 16, 0, 0],
 						stages: ["Celebration", "Galaxy"],
+						fave: true,
 						display: true,
 						url: "https://www.youtube.com/watch?v=bhBGb8J9vsI"
 					},
@@ -124,6 +136,7 @@ var app = new Vue({
 						shortName: "Warwick Davis",
 						timeGMT: [2019, 4, 15, 18, 30, 0],
 						stages: ["Celebration"],
+						fave: false,
 						display: true,
 						url: ""
 					},
@@ -132,6 +145,7 @@ var app = new Vue({
 						shortName: "Closing Ceremony",
 						timeGMT: [2019, 4, 15, 20, 30, 0],
 						stages: ["Celebration"],
+						fave: false,
 						display: true,
 						url: "https://www.youtube.com/watch?v=H0WpL1wnAzY"
 					},
@@ -218,6 +232,7 @@ var app = new Vue({
 		saveSettings: function() {
 			var saveSettings = JSON.stringify(this.settings);
 			localStorage.setItem('jamie_sw_celebration_2019', saveSettings);
+			console.log('saved');
 		},
 		loadSettings: function() {
 			var loadSettings = JSON.parse(localStorage.getItem('jamie_sw_celebration_2019'));
@@ -228,8 +243,12 @@ var app = new Vue({
 			}
 		},
 		filterPanel: function(panel) {
-			var shouldDisplay = panel.stages.some(r=> this.settings.stageFilter.includes(r));
-			panel.display = shouldDisplay;
+			// show if one of the stages is checked
+			var panelFilter = panel.stages.some(r=> this.settings.stageFilter.includes(r));
+			// show if showFaves is switched off, or panel is a fave, or in edit mode
+			var favesFilter = !this.settings.showFaves || panel.fave || this.settings.editFaves;
+
+			panel.display = panelFilter && favesFilter;
 		},
 		filterAllPanels: function(thisSet) {
 			this.panelsToDisplay = false;
@@ -262,6 +281,16 @@ var app = new Vue({
 			deep: true
 		},
 		'settings.stageFilter': {
+			handler: function() {
+				this.filterAllPanels(this.celebration2019);
+			}
+		},
+		'settings.showFaves': {
+			handler: function() {
+				this.filterAllPanels(this.celebration2019);
+			}
+		},
+		'settings.editFaves': {
 			handler: function() {
 				this.filterAllPanels(this.celebration2019);
 			}
