@@ -3,105 +3,136 @@ var app = new Vue({
 	data: {
 		settingsOpen: false,
 		settings: {},
+		panelsToDisplay: true,
 		defaultSettings: {
 			currentTimezone: 'America/Chicago',
 			selectedChicago: true,
 			selectedLocal: false,
 			twentyFourHour: false,
-			shortNames: false
+			shortNames: false,
+			showStages: false,
+			stageFilter: ["Celebration"]
 		},
 		celebration2019: [
 			{
 				date: "Friday April 12",
 				day: "Day 2",
+				display: true,
 				panels: [
 					{
 						name: "Star Wars: Episode IX",
 						shortName: "Episode IX",
 						timeGMT: [2019, 4, 12, 16, 0, 0],
-						url: "https://www.youtube.com/watch?v=RnhiLZOprZE"
+						stages: ["Celebration", "Galaxy", "Twin Suns"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=RnhiLZOprZE",
 					},
 					{
 						name: "Vader Immortal: A Star Wars VR Series",
 						shortName: "Vader Immortal",
 						timeGMT: [2019, 4, 12, 18, 30, 0],
-						url: "https://www.youtube.com/watch?v=bP9lB8BMSzo"
+						stages: ["Celebration"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=bP9lB8BMSzo",
 					},
 					{
 						name: "The Creatures, Droids & Aliens of Star Wars",
 						shortName: "Creatures, Droids & Aliens",
 						timeGMT: [2019, 4, 12, 21, 0, 0],
-						url: "https://www.youtube.com/watch?v=De3NwcdQAlY"
+						stages: ["Celebration"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=De3NwcdQAlY",
 					},
 				]
 			},
 			{
 				date: "Saturday April 13",
 				day: "Day 3",
+				display: true,
 				panels: [
 					{
 						name: "Bringing Star Wars: Galaxy’s Edge to Life at Disney Parks",
 						shortName: "Galaxy’s Edge",
 						timeGMT: [2019, 4, 13, 16, 0, 0],
-						url: "https://www.youtube.com/watch?v=lMwhJiK-XbA"
+						stages: ["Celebration"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=lMwhJiK-XbA",
 					},
 					{
 						name: "The Galaxy-Wide Premiere of Star Wars Jedi: Fallen Order",
 						shortName: "Jedi: Fallen Order",
 						timeGMT: [2019, 4, 13, 18, 30, 0],
-						url: "https://www.youtube.com/watch?v=XNa5FwnCfXE"
+						stages: ["Celebration"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=XNa5FwnCfXE",
 					},
 					{
-						name: "Sisters of the Force, A Celebration of Women and Star Wars",
+						name: "SISTERS OF THE FORCE, A Celebration of Women and Star Wars",
 						shortName: "Women and Star Wars",
 						timeGMT: [2019, 4, 13, 21, 0, 0],
-						url: "https://www.youtube.com/watch?v=MfzrCUOx91U"
+						stages: ["Celebration"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=MfzrCUOx91U",
 					},
 				]
 			},
 			{
 				date: "Sunday April 14",
 				day: "Day 4",
+				display: true,
 				panels: [
 					{
 						name: "The Mandalorian",
 						timeGMT: [2019, 4, 14, 16, 0, 0],
-						url: "https://www.youtube.com/watch?v=GrlTosbjylA"
+						stages: ["Celebration", "Galaxy", "Twin Suns"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=GrlTosbjylA",
 					},
 					{
 						name: "In Conversation with Alan Tudyk",
 						shortName: "Alan Tudyk",
 						timeGMT: [2019, 4, 14, 18, 30, 0],
-						url: "https://www.youtube.com/watch?v=rscLMX2axdk"
+						stages: ["Celebration"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=rscLMX2axdk",
 					},
 					{
 						name: "Star Wars: The Clone Wars Sneak Peek",
 						shortName: "The Clone Wars",
 						timeGMT: [2019, 4, 14, 20, 30, 0],
-						url: "https://www.youtube.com/watch?v=I0XlB2EJZuA"
+						stages: ["Celebration", "Twin Suns"],
+						display: true,
+						url: "https://www.youtube.com/watch?v=I0XlB2EJZuA",
 					},
 				]
 			},
 			{
 				date: "Monday April 15",
 				day: "Day 5",
+				display: true,
 				panels: [
 					{
 						name: "Star Wars: The Phantom Menace 20th Anniversary Celebration",
 						shortName: "TPM 20th Anniversary",
 						timeGMT: [2019, 4, 15, 16, 0, 0],
+						stages: ["Celebration", "Galaxy"],
+						display: true,
 						url: "https://www.youtube.com/watch?v=bhBGb8J9vsI"
 					},
 					{
 						name: "Short Stories with Warwick Davis",
 						shortName: "Warwick Davis",
 						timeGMT: [2019, 4, 15, 18, 30, 0],
+						stages: ["Celebration"],
+						display: true,
 						url: ""
 					},
 					{
 						name: "Celebration Chicago Closing Ceremony",
 						shortName: "Closing Ceremony",
 						timeGMT: [2019, 4, 15, 20, 30, 0],
+						stages: ["Celebration"],
+						display: true,
 						url: "https://www.youtube.com/watch?v=H0WpL1wnAzY"
 					},
 				]
@@ -196,6 +227,23 @@ var app = new Vue({
 				this.settings = Object.assign({}, this.defaultSettings);
 			}
 		},
+		filterPanel: function(panel) {
+			var shouldDisplay = panel.stages.some(r=> this.settings.stageFilter.includes(r));
+			panel.display = shouldDisplay;
+		},
+		filterAllPanels: function(thisSet) {
+			this.panelsToDisplay = false;
+			for (var i = 0; i < thisSet.length; i++) {
+				thisSet[i].display = false;
+				for (var j = 0; j < thisSet[i].panels.length; j++) {
+					this.filterPanel(thisSet[i].panels[j]);
+					if(thisSet[i].panels[j].display) {
+						this.panelsToDisplay = true;
+						thisSet[i].display = true;
+					}
+				}
+			}
+		},
 		resetSettings: function() {
 			var confirmReset = confirm('Are you sure you want to clear all settings?');
 			if(confirmReset) {
@@ -212,6 +260,11 @@ var app = new Vue({
 				this.saveSettings();
 			},
 			deep: true
+		},
+		'settings.stageFilter': {
+			handler: function() {
+				this.filterAllPanels(this.celebration2019);
+			}
 		}
 	},
 	beforeMount() {
