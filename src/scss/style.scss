@@ -17,6 +17,10 @@ body {
 $sw-yellow: #ffe900;
 $max-page-width: 800px;
 
+img {
+	max-width: 100%;
+}
+
 a {
 	color: #fff;
 	text-decoration: underline;
@@ -43,6 +47,7 @@ h1 {
 		font-weight: 200;
 		text-transform: uppercase;
 		font-size: 20px;
+		margin-top: 10px;
 	}
 
 	.row {
@@ -83,7 +88,46 @@ h1 {
 		&.settings-open {
 			padding: 36px 0 10px;
 			height: auto;
-			border-bottom: 1px solid #7f7f7f;
+		}
+	}
+}
+
+@keyframes borderpulse {
+	0% {border-color: $sw-yellow;}
+	50% {border-color: #000;}
+	100% {border-color: $sw-yellow;}
+}
+.page-edit-faves {
+	padding-top: 170px;
+}
+.show-hide-settings {
+	position: fixed;
+	background: #000;
+	top: 0;
+	right: 0;
+	left: 0;
+	z-index: 1;
+
+	border: 8px solid;
+
+	-webkit-animation: borderpulse 2s infinite; /* Safari 4+ */
+	-moz-animation: borderpulse 2s infinite; /* Fx 5+ */
+	-o-animation: borderpulse 2s infinite; /* Opera 12+ */
+	animation: borderpulse 2s infinite; /* IE 10+, Fx 29+ */
+
+	h4 {
+		opacity: 100%;
+	}
+
+	.row {
+		margin-bottom: 14px;
+	}
+	.checkall-buttons-wrap {
+		margin: 4px 0 12px;
+
+		.button {
+			opacity: 60%;
+			min-width: 120px;
 		}
 	}
 }
@@ -128,6 +172,10 @@ h1 {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	&.fav-checkbox {
+		margin-right: 4px;
+	}
 
 	label {
 		margin-bottom: 0;
@@ -182,6 +230,10 @@ h1 {
 			text-transform: none;
 		}
 
+		&.hidden-panel {
+			opacity: 50%;
+		}
+
 		> div:nth-child(2) {
 			text-align: right;
 			display: flex;
@@ -215,4 +267,19 @@ h1 {
 	.checkbox-wrap {
 		justify-content: flex-start;
 	}
+}
+
+.quote {
+	font-size: 20px;
+	font-style: italic;
+	line-height: normal;
+	margin: 8px 0;
+}
+.citation {
+	text-transform: uppercase;
+	font-size: 14px;
+	margin-bottom: 32px;
+}
+.no-panels-msg {
+	opacity: 50%;
 }
